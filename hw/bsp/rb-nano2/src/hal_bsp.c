@@ -39,10 +39,17 @@
 #if MYNEWT_VAL(PWM)
 #include <pwm_nrf52/pwm_nrf52.h>
 #endif
+#if MYNEWT_VAL(QDEC)
+#include <qdec_nrf52/qdec_nrf52.h>
+#endif
 
 #if MYNEWT_VAL(PWM_0)
 static struct pwm_dev os_bsp_pwm0;
 #endif
+#if MYNEWT_VAL(QDEC)
+static struct qdec_dev os_bsp_qdec0;
+#endif
+
 
 #if MYNEWT_VAL(UART_0)
 static struct uart_dev os_bsp_uart0;
@@ -51,6 +58,14 @@ static const struct nrf52_uart_cfg os_bsp_uart0_cfg = {
     .suc_pin_rx = MYNEWT_VAL(UART_0_PIN_RX),
     .suc_pin_rts = MYNEWT_VAL(UART_0_PIN_RTS),
     .suc_pin_cts = MYNEWT_VAL(UART_0_PIN_CTS),
+};
+#endif
+
+#if MYNEWT_VAL(QDEC)
+static const struct qdec_cfg os_bsp_qdec_cfg = {
+		.phase_A_pin = MYNEWT_VAL(QDEC_PHASE_A),
+		.phase_B_pin = MYNEWT_VAL(QDEC_PHASE_B),
+		.LED_pin = MYNEWT_VAL(QDEC_LED),
 };
 #endif
 
@@ -175,6 +190,16 @@ hal_bsp_init(void)
                        OS_DEV_INIT_PRIO_DEFAULT,
                        nrf52_pwm_dev_init,
                        NULL);
+    assert(rc == 0);
+#endif
+
+#if MYNEWT_VAL(QDEC)
+    rc = os_dev_create((struct os_dev *) &os_bsp_qdec0,
+                       "qdec0",
+                       OS_DEV_INIT_KERNEL,
+                       OS_DEV_INIT_PRIO_DEFAULT,
+                       nrf52_qdec_dev_init,
+					   (void *)&os_bsp_qdec_cfg);
     assert(rc == 0);
 #endif
 

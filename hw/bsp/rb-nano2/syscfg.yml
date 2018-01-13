@@ -66,6 +66,19 @@ syscfg.defs:
         description: 'NRF52 PWM'
         value: 1
 
+    QDEC:
+        description: 'NRF52 QDEC'
+        value: 1
+    QDEC_PHASE_A:
+        description: 'RedBear Nano 2 QDEC Phase A pin'
+        value: 4
+    QDEC_PHASE_B:
+        description: 'RedBear Nano 2 QDEC Phase B pin'
+        value: 5
+    QDEC_LED:
+        description: 'RedBear Nano 2 QDEC LED pin'
+        value: 6
+
 syscfg.defs.BLE_LP_CLOCK:
     TIMER_0:
         value: 0
